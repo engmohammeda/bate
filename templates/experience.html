@@ -1,0 +1,124 @@
+{% extends "layout.html" %}
+
+{% block title %}
+الخبرات والشهادات - بورتفوليو مهندس المساحة
+{% endblock %}
+
+{% block content %}
+<style>
+    .timeline {
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 0;
+    }
+    .timeline::after {
+        content: '';
+        position: absolute;
+        width: 4px;
+        background-color: var(--secondary-color);
+        top: 0;
+        bottom: 0;
+        right: 50%;
+        margin-right: -2px;
+    }
+    .timeline-container {
+        padding: 10px 40px;
+        position: relative;
+        background-color: inherit;
+        width: 50%;
+    }
+    .timeline-container.left {
+        left: 0;
+        padding-left: 0;
+        padding-right: 80px;
+    }
+    .timeline-container.right {
+        left: 50%;
+        padding-right: 0;
+        padding-left: 80px;
+    }
+    .timeline-container::after {
+        content: '';
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        right: -12.5px;
+        background-color: white;
+        border: 4px solid var(--secondary-color);
+        top: 25px;
+        border-radius: 50%;
+        z-index: 1;
+    }
+    .timeline-container.right::after {
+        left: -12.5px;
+    }
+    .timeline-content {
+        padding: 20px 30px;
+        background-color: white;
+        position: relative;
+        border-radius: 6px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    }
+    .timeline-content h3 {
+        color: var(--primary-color);
+    }
+    .timeline-content .date {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+</style>
+
+<section>
+    <div class="container">
+        <h2 style="text-align: center;">السيرة الذاتية والخبرات</h2>
+        <p style="text-align: center; max-width: 700px; margin: 0 auto 3rem auto;">مسيرة مهنية تمتد لأكثر من 10 سنوات في قلب المشاريع الهندسية الكبرى، مع التزام دائم بالدقة والتميز.</p>
+
+        <!-- Experience Timeline -->
+        <div class="timeline">
+            <div class="timeline-container right reveal">
+                <div class="timeline-content">
+                    <h3>مهندس مساحة أول</h3>
+                    <span class="date">2018 - حتى الآن</span>
+                    <p><strong>شركة الإنشاءات الهندسية المتقدمة</strong> - قيادة فريق المساحة في مشاريع بنية تحتية كبرى، بما في ذلك الطرق والمطارات والجسور.</p>
+                </div>
+            </div>
+            <div class="timeline-container left reveal">
+                <div class="timeline-content">
+                    <h3>مهندس مساحة</h3>
+                    <span class="date">2014 - 2018</span>
+                    <p><strong>مجموعة "البناء" الدولية</strong> - مسؤول عن أعمال المسح الطبوغرافي والإنشائي لمشاريع تطوير حضري وأبراج سكنية.</p>
+                </div>
+            </div>
+            <div class="timeline-container right reveal">
+                <div class="timeline-content">
+                    <h3>مساعد مهندس مساحة</h3>
+                    <span class="date">2012 - 2014</span>
+                    <p><strong>مكتب الاستشارات الهندسية</strong> - المشاركة في أعمال المسح الميداني وإعداد الخرائط الأولية للمشاريع الصغيرة والمتوسطة.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Education and Certifications -->
+        <div class="row reveal" style="display: flex; gap: 2rem; margin-top: 4rem;">
+            <div class="col" style="flex: 1;">
+                <h3>التعليم</h3>
+                <div class="timeline-content">
+                    <h4>بكالوريوس في الهندسة المدنية</h4>
+                    <p>جامعة الملك فهد للبترول والمعادن (2012)</p>
+                </div>
+            </div>
+            <div class="col" style="flex: 1;">
+                <h3>الشهادات الاحترافية</h3>
+                <div class="timeline-content">
+                    <h4>مهندس محترف معتمد (P.Eng)</h4>
+                    <p>الهيئة السعودية للمهندسين (2016)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

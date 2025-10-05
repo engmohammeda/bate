@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block title %}
+الخدمات - بورتفوليو مهندس المساحة
+{% endblock %}
+
+{% block content %}
+<style>
+    .service-item {
+        background: #fff;
+        padding: 2.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        text-align: center;
+        transition: all 0.3s ease;
+        border-top: 4px solid var(--secondary-color);
+    }
+    .service-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    .service-item .icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+    }
+    .service-item h3 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+</style>
+
+<section class="bg-light">
+    <div class="container">
+        <h2 style="text-align: center;">خدماتنا الهندسية المتكاملة</h2>
+        <p style="text-align: center; max-width: 700px; margin: 0 auto 3rem auto;">نقدم مجموعة شاملة من الخدمات المساحية والهندسية التي تضمن الدقة والكفاءة في جميع مراحل مشروعك، باستخدام أحدث التقنيات والمعايير العالمية.</p>
+
+        <div class="project-grid">
+            <!-- Service 1 -->
+            <div class="service-item reveal">
+                <i class="fas fa-map-marked-alt icon"></i>
+                <h3>المسح الطبوغرافي والكنتوري</h3>
+                <p>إنشاء خرائط طبوغرافية دقيقة تمثل تضاريس الأرض وتفاصيلها، وهي أساسية لأعمال التصميم والتخطيط الهندسي.</p>
+            </div>
+
+            <!-- Service 2 -->
+            <div class="service-item reveal">
+                <i class="fas fa-hard-hat icon"></i>
+                <h3>المسح الإنشائي ومراقبة التنفيذ</h3>
+                <p>توقيع النقاط والمحاور للمباني والمنشآت في الموقع بدقة متناهية، ومراقبة جودة التنفيذ لضمان مطابقته للتصاميم.</p>
+            </div>
+
+            <!-- Service 3 -->
+            <div class="service-item reveal">
+                <i class="fas fa-draw-polygon icon"></i>
+                <h3>مسح الحدود وتثبيت الملكيات</h3>
+                <p>تحديد وتثبيت حدود الأراضي والممتلكات بشكل رسمي وقانوني، وحل النزاعات المتعلقة بالحدود.</p>
+            </div>
+
+            <!-- Service 4 -->
+            <div class="service-item reveal">
+                <i class="fas fa-road icon"></i>
+                <h3>مسح الطرق والبنية التحتية</h3>
+                <p>تخطيط ومسح مسارات الطرق وشبكات المياه والصرف الصحي وغيرها من مشاريع البنية التحتية الحيوية.</p>
+            </div>
+
+            <!-- Service 5 -->
+            <div class="service-item reveal">
+                <i class="fas fa-cube icon"></i>
+                <h3>حساب الكميات وتسوية الأراضي</h3>
+                <p>حساب دقيق لكميات الحفر والردم اللازمة لمشاريع تسوية الأراضي، مما يساعد في تقدير التكاليف والموارد.</p>
+            </div>
+
+            <!-- Service 6 -->
+            <div class="service-item reveal">
+                <i class="fas fa-drone icon"></i>
+                <h3>المسح الجوي باستخدام الدرونز (UAV)</h3>
+                <p>استخدام الطائرات بدون طيار لإنتاج نماذج ثلاثية الأبعاد وصور جوية عالية الدقة للمشاريع الكبيرة والمناطق الصعبة.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

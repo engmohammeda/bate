@@ -3,18 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}موقعي الاحترافي{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>{% block title %}بورتفوليو مهندس المساحة{% endblock %}</title>
+
+    <!-- Google Fonts: Exo 2 for Headings, Roboto for Body -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <header>
         <nav class="container">
-            <a href="{{ url_for('index') }}" class="logo">جولز للبرمجة</a>
+            <a href="{{ url_for('index') }}" class="logo">المهندس</a>
             <ul>
                 <li><a href="{{ url_for('index') }}">الرئيسية</a></li>
+                <li><a href="{{ url_for('projects') }}">المشاريع</a></li>
+                <li><a href="{{ url_for('services') }}">الخدمات</a></li>
+                <li><a href="{{ url_for('experience') }}">الخبرات</a></li>
+                <li><a href="{{ url_for('technologies') }}">التقنيات</a></li>
+                <li><a href="{{ url_for('gallery') }}">المعرض</a></li>
+                <li><a href="{{ url_for('testimonials') }}">الشهادات</a></li>
+                <li><a href="{{ url_for('blog') }}">المدونة</a></li>
                 <li><a href="{{ url_for('about') }}">من نحن</a></li>
                 <li><a href="{{ url_for('contact') }}">اتصل بنا</a></li>
             </ul>
@@ -27,8 +40,33 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 موقع جولز الاحترافي. جميع الحقوق محفوظة.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+            <p>&copy; 2025 بورتفوليو المهندس. تصميم وبرمجة بواسطة جولز.</p>
         </div>
     </footer>
+
+    <script>
+        // --- Scroll Reveal Animation ---
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        revealElements.forEach(element => {
+            revealObserver.observe(element);
+        });
+    </script>
 </body>
 </html>

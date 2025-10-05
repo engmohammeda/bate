@@ -1,0 +1,127 @@
+{% extends "layout.html" %}
+
+{% block title %}
+تفاصيل المشروع: تطوير شبكة الطرق السريعة (N-45)
+{% endblock %}
+
+{% block content %}
+<style>
+    .project-header {
+        background: var(--light-color);
+        padding: 3rem 0;
+        text-align: center;
+    }
+    .project-header h2 {
+        margin: 0;
+    }
+    .project-meta {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 1rem;
+        font-weight: 500;
+    }
+    .project-meta span {
+        background: var(--secondary-color);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+    .project-content {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        gap: 3rem;
+        margin-top: 4rem;
+    }
+    .project-details, .project-summary {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 8px;
+    }
+    .project-summary ul {
+        list-style: none;
+        padding: 0;
+    }
+    .project-summary li {
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--light-color);
+    }
+    .project-summary li:last-child {
+        border-bottom: none;
+    }
+    .project-summary strong {
+        display: block;
+        color: var(--primary-color);
+        margin-bottom: 0.25rem;
+    }
+    .project-gallery {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    .project-gallery img {
+        width: 100%;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+    @media (max-width: 992px) {
+        .project-content {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<section class="project-header">
+    <div class="container">
+        <h2>تطوير شبكة الطرق السريعة (N-45)</h2>
+        <div class="project-meta">
+            <span>العميل: وزارة النقل</span>
+            <span>الموقع: المنطقة الشرقية</span>
+            <span>المدة: 24 شهرًا</span>
+        </div>
+    </div>
+</section>
+
+<section class="container">
+    <div class="project-content">
+        <!-- Main Details -->
+        <div class="project-details">
+            <h3>نظرة عامة على المشروع</h3>
+            <p>تضمن هذا المشروع الضخم أعمال المسح والتصميم والإشراف على تنفيذ طريق سريع جديد بطول 150 كيلومترًا، يربط بين مدينتين رئيسيتين بهدف تحسين حركة النقل وتقليل زمن الرحلات. كان المشروع حيويًا لدعم النمو الاقتصادي في المنطقة.</p>
+
+            <h3 style="margin-top: 2rem;">الأهداف الرئيسية</h3>
+            <ul>
+                <li>إنشاء مسار آمن وفعال يتبع أفضل المعايير الهندسية العالمية.</li>
+                <li>إجراء مسح طبوغرافي شامل للمسار المقترح وتحديد العقبات الطبيعية والبشرية.</li>
+                <li>تصميم المسار الأفقي والرأسي للطريق، بما في ذلك التقاطعات والجسور وأنظمة الصرف.</li>
+                <li>ضمان الدقة المطلقة في توقيع نقاط التحكم ومحاور الطريق أثناء مرحلة التنفيذ.</li>
+            </ul>
+
+            <h3 style="margin-top: 2rem;">التحديات والحلول</h3>
+            <p><strong>التحدي:</strong> وجود تضاريس متنوعة وصعبة، بما في ذلك مناطق صخرية وكثبان رملية، مما شكل تحديًا لأعمال المسح والتصميم.</p>
+            <p><strong>الحل:</strong> تم استخدام مزيج من تقنيات المسح الأرضي (Total Station) والمسح الجوي (Drones) لإنشاء نموذج رقمي دقيق للتضاريس (DTM)، مما سمح بتحسين المسار لتقليل كميات الحفر والردم وتجنب المناطق الصعبة.</p>
+
+            <p><strong>التحدي:</strong> الحاجة إلى الحفاظ على دقة عالية على امتداد 150 كم.</p>
+            <p><strong>الحل:</strong> تم إنشاء شبكة من نقاط التحكم عالية الدقة (Control Network) باستخدام تقنية GPS التفاضلية (DGPS)، وتم استخدامها كمرجع لجميع أعمال المسح والتنفيذ، مما ضمن اتساق ودقة البيانات على طول المشروع.</p>
+        </div>
+
+        <!-- Summary & Gallery -->
+        <div class="project-summary">
+            <h3>ملخص المشروع</h3>
+            <ul>
+                <li><strong>الخدمة:</strong> مسح وتصميم الطرق</li>
+                <li><strong>التكلفة:</strong> 500 مليون ريال سعودي</li>
+                <li><strong>الحالة:</strong> مكتمل (2023)</li>
+            </ul>
+            <h3 style="margin-top: 2rem;">معرض المشروع</h3>
+            <div class="project-gallery">
+                <img src="https://images.unsplash.com/photo-1572204321325-4a43369931a5?w=600&q=80" alt="صورة طريق سريع">
+                <img src="https://images.unsplash.com/photo-1599673634833-8756d15b0266?w=600&q=80" alt="صورة أعمال حفر">
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

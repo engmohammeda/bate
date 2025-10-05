@@ -1,35 +1,47 @@
 {% extends "layout.html" %}
 
 {% block title %}
-الرئيسية - موقعي الاحترافي
+الرئيسية - بورتفوليو مهندس المساحة
 {% endblock %}
 
 {% block content %}
+<!-- Hero Section -->
 <section class="hero">
-    <div class="container">
-        <h1>أهلاً بك في عالم الإبداع الرقمي</h1>
-        <p>نحن نحول الأفكار إلى تجارب رقمية مذهلة. اكتشف كيف يمكننا مساعدتك في تحقيق رؤيتك.</p>
-        <a href="{{ url_for('contact') }}" class="btn">ابدأ مشروعك معنا</a>
+    <div class="hero-content">
+        <h1>هندسة الدقة، بناء المستقبل</h1>
+        <p class="subtitle">متخصص في تقديم حلول مساحية وهندسية مبتكرة للمشاريع المعقدة، من التخطيط الأولي إلى التنفيذ النهائي.</p>
+        <a href="{{ url_for('projects') }}" class="btn">اكتشف المشاريع</a>
     </div>
 </section>
 
-<section class="features">
-    <div class="container">
-        <h2>لماذا تختارنا؟</h2>
-        <div class="feature-grid">
-            <div class="feature-item">
-                <h3>تصميم مبتكر</h3>
-                <p>نصمم واجهات مستخدم جذابة وسهلة الاستخدام تترك انطباعًا دائمًا.</p>
-            </div>
-            <div class="feature-item">
-                <h3>أداء فائق</h3>
-                <p>نضمن لك مواقع سريعة وموثوقة تعمل بكفاءة على جميع الأجهزة.</p>
-            </div>
-            <div class="feature-item">
-                <h3>دعم متكامل</h3>
-                <p>نقدم دعمًا فنيًا متواصلاً لضمان استمرارية نجاح مشروعك.</p>
-            </div>
+<!-- Services Overview Section -->
+<section class="container reveal">
+    <h2 style="text-align: center;">خدماتنا الهندسية</h2>
+    <div class="feature-grid" style="margin-top: 3rem;">
+        <div class="feature-item">
+            <i class="fas fa-ruler-combined fa-3x" style="color: var(--secondary-color); margin-bottom: 1rem;"></i>
+            <h3>المسح الطوبوغرافي</h3>
+            <p>خرائط دقيقة وتفصيلية لسطح الأرض لدعم مراحل التخطيط والتصميم للمشاريع الهندسية.</p>
         </div>
+        <div class="feature-item">
+            <i class="fas fa-road fa-3x" style="color: var(--secondary-color); margin-bottom: 1rem;"></i>
+            <h3>تصميم الطرق والبنية التحتية</h3>
+            <p>تخطيط وتصميم شبكات الطرق وأنظمة الصرف الصحي والبنية التحتية الحيوية للمدن الحديثة.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-satellite-dish fa-3x" style="color: var(--secondary-color); margin-bottom: 1rem;"></i>
+            <h3>التحكم المساحي والـ GPS</h3>
+            <p>استخدام أحدث تقنيات GPS لضمان أعلى مستويات الدقة في تنفيذ ومراقبة المشاريع الإنشائية.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="bg-light reveal">
+    <div class="container" style="text-align: center;">
+        <h2>هل أنت مستعد لبدء مشروعك القادم؟</h2>
+        <p style="max-width: 600px; margin: 1rem auto 2rem;">لدي الخبرة والأدوات اللازمة لتحويل رؤيتك إلى حقيقة. لنتحدث عن كيفية تحقيق أهدافك.</p>
+        <a href="{{ url_for('contact') }}" class="btn">تواصل معي الآن</a>
     </div>
 </section>
 {% endblock %}
