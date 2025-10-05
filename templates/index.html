@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+الرئيسية - موقعي الاحترافي
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>أهلاً بك في عالم الإبداع الرقمي</h1>
+        <p>نحن نحول الأفكار إلى تجارب رقمية مذهلة. اكتشف كيف يمكننا مساعدتك في تحقيق رؤيتك.</p>
+        <a href="{{ url_for('contact') }}" class="btn">ابدأ مشروعك معنا</a>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <h2>لماذا تختارنا؟</h2>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <h3>تصميم مبتكر</h3>
+                <p>نصمم واجهات مستخدم جذابة وسهلة الاستخدام تترك انطباعًا دائمًا.</p>
+            </div>
+            <div class="feature-item">
+                <h3>أداء فائق</h3>
+                <p>نضمن لك مواقع سريعة وموثوقة تعمل بكفاءة على جميع الأجهزة.</p>
+            </div>
+            <div class="feature-item">
+                <h3>دعم متكامل</h3>
+                <p>نقدم دعمًا فنيًا متواصلاً لضمان استمرارية نجاح مشروعك.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
