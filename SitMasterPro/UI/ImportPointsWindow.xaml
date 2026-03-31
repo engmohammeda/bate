@@ -1,9 +1,37 @@
 <Window x:Class="SitMasterPro.UI.ImportPointsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2000/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2000/xaml"
-        Title="SitMaster Pro - Import Points" Height="450" Width="600"
-        WindowStartupLocation="CenterScreen" Background="#F4F4F4" ResizeMode="NoResize">
-    <Grid Margin="20">
+        Title="SitMaster Pro - Import Points" Height="500" Width="650"
+        WindowStartupLocation="CenterScreen" Background="#212121" ResizeMode="NoResize"
+        FontFamily="Segoe UI" Foreground="#E0E0E0">
+    <Window.Resources>
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#0696D7"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="15,5"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#007ACC"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="Background" Value="#333333"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="Padding" Value="15,5"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#444444"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#444444"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="25">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -11,37 +39,71 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <TextBlock Text="Import Points from File" FontSize="24" FontWeight="Bold" Foreground="#333" Margin="0,0,0,20"/>
+        <!-- Header Section -->
+        <StackPanel Margin="0,0,0,25">
+            <TextBlock Text="SITMASTER PRO" FontSize="14" Foreground="#0696D7" FontWeight="Bold" CharacterSpacing="100"/>
+            <TextBlock Text="Import Points to Civil 3D" FontSize="26" FontWeight="Light" Margin="0,5,0,0"/>
+            <Rectangle Height="1" Fill="#333333" Margin="0,15,0,0"/>
+        </StackPanel>
 
-        <!-- File Selection -->
-        <StackPanel Grid.Row="1" Margin="0,0,0,15">
-            <TextBlock Text="Select Source File:" Margin="0,0,0,5"/>
+        <!-- File Selection Area -->
+        <StackPanel Grid.Row="1" Margin="0,0,0,20">
+            <TextBlock Text="DATA SOURCE" FontSize="11" Foreground="#888" Margin="0,0,0,8" FontWeight="SemiBold"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Name="txtFilePath" Height="30" VerticalContentAlignment="Center" IsReadOnly="True" Background="White"/>
-                <Button Content="Browse..." Grid.Column="1" Width="80" Margin="10,0,0,0" Click="Browse_Click"/>
+                <Border Background="#2D2D2D" BorderBrush="#3D3D3D" BorderThickness="1" CornerRadius="2">
+                    <TextBox Name="txtFilePath" Text="{Binding FilePath}" Height="35" VerticalContentAlignment="Center" IsReadOnly="True"
+                             Background="Transparent" BorderThickness="0" Foreground="White" Padding="10,0"/>
+                </Border>
+                <Button Command="{Binding BrowseCommand}" Content="Browse..." Grid.Column="1" Width="100" Margin="10,0,0,0" Style="{StaticResource SecondaryButton}" Height="35"/>
             </Grid>
         </StackPanel>
 
-        <!-- Point Format Selection -->
-        <GroupBox Grid.Row="2" Header="Point Format" Padding="10">
-            <ListBox Name="lstFormats" BorderThickness="0" Background="Transparent">
-                <ListBoxItem Content="PNEZD (comma delimited)"/>
-                <ListBoxItem Content="PENZD (comma delimited)"/>
-                <ListBoxItem Content="PNEZ (comma delimited)"/>
-                <ListBoxItem Content="ENZ (space delimited)"/>
-                <ListBoxItem Content="External (Custom)"/>
-            </ListBox>
-        </GroupBox>
+        <!-- Format Selection Area -->
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="POINT FORMAT" FontSize="11" Foreground="#888" Margin="0,0,0,8" FontWeight="SemiBold"/>
+            <Border Grid.Row="1" Background="#2D2D2D" BorderBrush="#3D3D3D" BorderThickness="1" CornerRadius="2">
+                <ListBox ItemsSource="{Binding Formats}" SelectedItem="{Binding SelectedFormat}"
+                         Background="Transparent" BorderThickness="0" Padding="5">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="10,8">
+                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14" Foreground="#E0E0E0"/>
+                                <TextBlock Text="{Binding Description}" FontSize="12" Foreground="#888" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                            <Setter Property="BorderBrush" Value="#333333"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#3D3D3D"/>
+                                    <Setter Property="BorderBrush" Value="#0696D7"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#333333"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </Border>
+            </Border>
+        </Grid>
 
-        <!-- Action Buttons -->
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button Name="btnImport" Content="Import" Width="100" Height="35" Click="Import_Click" Background="#007ACC" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
-            <Button Name="btnCancel" Content="Cancel" Width="100" Height="35" Margin="10,0,0,0" Click="Cancel_Click" Background="#CCC" BorderThickness="0"/>
+        <!-- Footer Buttons -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,30,0,0">
+            <Button Name="btnCancel" Content="Cancel" Width="110" Height="40" Margin="0,0,15,0" Style="{StaticResource SecondaryButton}" Click="Cancel_Click"/>
+            <Button Name="btnImport" Content="IMPORT" Width="130" Height="40" Style="{StaticResource ModernButton}" Click="Import_Click"/>
         </StackPanel>
     </Grid>
 </Window>

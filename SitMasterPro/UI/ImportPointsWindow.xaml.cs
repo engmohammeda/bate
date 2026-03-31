@@ -1,45 +1,33 @@
 using System;
 using System.Windows;
-using Microsoft.Win32;
 
 namespace SitMasterPro.UI
 {
     public partial class ImportPointsWindow : Window
     {
-        public string? SelectedFilePath { get; private set; }
-        public string? SelectedFormat { get; private set; }
+        public ImportPointsViewModel ViewModel { get; }
 
         public ImportPointsWindow()
         {
             InitializeComponent();
-        }
-
-        private void Browse_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Text files (*.txt;*.csv)|*.txt;*.csv|All files (*.*)|*.*";
-            if (openFileDialog.ShowDialog() == true)
-            {
-                txtFilePath.Text = openFileDialog.FileName;
-            }
+            ViewModel = new ImportPointsViewModel();
+            DataContext = ViewModel;
         }
 
         private void Import_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(txtFilePath.Text))
+            if (string.IsNullOrEmpty(ViewModel.FilePath))
             {
-                MessageBox.Show("Please select a file.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please select a data source file first.", "SitMaster Pro", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
-            if (lstFormats.SelectedItem == null)
+            if (ViewModel.SelectedFormat == null)
             {
-                MessageBox.Show("Please select a point format.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please select a point format from the list.", "SitMaster Pro", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
-            SelectedFilePath = txtFilePath.Text;
-            SelectedFormat = (lstFormats.SelectedItem as System.Windows.Controls.ListBoxItem)?.Content.ToString();
             DialogResult = true;
             Close();
         }

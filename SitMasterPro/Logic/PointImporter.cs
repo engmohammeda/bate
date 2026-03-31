@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Collections.Generic;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
@@ -8,6 +7,7 @@ using Autodesk.AutoCAD.Runtime;
 using Autodesk.Civil.ApplicationServices;
 using Autodesk.Civil.DatabaseServices;
 using SitMasterPro.UI;
+using SitMasterPro.Models;
 
 namespace SitMasterPro.Logic
 {
@@ -23,10 +23,14 @@ namespace SitMasterPro.Logic
             ImportPointsWindow window = new ImportPointsWindow();
             if (Application.ShowModalWindow(window) != true) return;
 
-            string? filePath = window.SelectedFilePath;
-            string? format = window.SelectedFormat;
+            string? filePath = window.ViewModel.FilePath;
+            PointFormat? formatModel = window.ViewModel.SelectedFormat;
 
-            if (string.IsNullOrEmpty(filePath) || string.IsNullOrEmpty(format)) return;
+            if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath) || formatModel == null)
+            {
+                ed.WriteMessage("\nSitMaster Pro: Invalid file or format selection.");
+                return;
+            }
 
             try
             {
@@ -34,35 +38,61 @@ namespace SitMasterPro.Logic
                 {
                     CogoPointCollection points = civilDoc.CogoPoints;
                     int count = 0;
+                    int skipped = 0;
+                    string format = formatModel.Format;
 
                     using (StreamReader reader = new StreamReader(filePath))
                     {
-                        string line;
+                        string? line;
                         while ((line = reader.ReadLine()) != null)
                         {
-                            string[] parts = line.Split(',', ';', ' ', '\t');
-                            if (parts.Length < 3) continue;
+                            if (string.IsNullOrWhiteSpace(line)) continue;
 
-                            double n = 0, e = 0, z = 0;
-                            string desc = string.Empty;
+                            string[] parts = line.Split(new[] { ',', ';', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                            if (parts.Length < 3)
+                            {
+                                skipped++;
+                                continue;
+                            }
 
-                            // Dynamic parsing based on selected format
-                            if (format.Contains("PNEZD")) { e = Parse(parts, 2); n = Parse(parts, 1); z = Parse(parts, 3); desc = GetDesc(parts, 4); }
-                            else if (format.Contains("PENZD")) { e = Parse(parts, 1); n = Parse(parts, 2); z = Parse(parts, 3); desc = GetDesc(parts, 4); }
-                            else if (format.Contains("PNEZ")) { e = Parse(parts, 2); n = Parse(parts, 1); z = Parse(parts, 3); }
-                            else if (format.Contains("ENZ")) { e = Parse(parts, 0); n = Parse(parts, 1); z = Parse(parts, 2); }
+                            try
+                            {
+                                double n = 0, e = 0, z = 0;
+                                string desc = string.Empty;
 
-                            Autodesk.AutoCAD.Geometry.Point3d p3d = new Autodesk.AutoCAD.Geometry.Point3d(e, n, z);
-                            ObjectId pointId = points.Add(p3d, false);
-                            CogoPoint point = (CogoPoint)tr.GetObject(pointId, OpenMode.ForWrite);
+                                switch (format)
+                                {
+                                    case "PNEZD":
+                                        n = Parse(parts, 1); e = Parse(parts, 2); z = Parse(parts, 3); desc = GetDesc(parts, 4);
+                                        break;
+                                    case "PENZD":
+                                        e = Parse(parts, 1); n = Parse(parts, 2); z = Parse(parts, 3); desc = GetDesc(parts, 4);
+                                        break;
+                                    case "PNEZ":
+                                        n = Parse(parts, 1); e = Parse(parts, 2); z = Parse(parts, 3);
+                                        break;
+                                    case "ENZ":
+                                        e = Parse(parts, 0); n = Parse(parts, 1); z = Parse(parts, 2);
+                                        break;
+                                }
 
-                            if (!string.IsNullOrEmpty(desc)) point.RawDescription = desc;
-                            count++;
+                                Autodesk.AutoCAD.Geometry.Point3d p3d = new Autodesk.AutoCAD.Geometry.Point3d(e, n, z);
+                                ObjectId pointId = points.Add(p3d, false);
+                                CogoPoint point = (CogoPoint)tr.GetObject(pointId, OpenMode.ForWrite);
+
+                                if (!string.IsNullOrEmpty(desc)) point.RawDescription = desc;
+                                count++;
+                            }
+                            catch
+                            {
+                                skipped++;
+                            }
                         }
                     }
 
                     tr.Commit();
                     ed.WriteMessage($"\nSitMaster Pro: Successfully imported {count} points from {Path.GetFileName(filePath)}.");
+                    if (skipped > 0) ed.WriteMessage($"\nSitMaster Pro: Skipped {skipped} invalid lines.");
                 }
             }
             catch (System.Exception ex)
@@ -74,7 +104,7 @@ namespace SitMasterPro.Logic
         private static double Parse(string[] parts, int index)
         {
             if (index < parts.Length && double.TryParse(parts[index], out double val)) return val;
-            return 0;
+            throw new FormatException($"Invalid numeric value at index {index}");
         }
 
         private static string GetDesc(string[] parts, int index)

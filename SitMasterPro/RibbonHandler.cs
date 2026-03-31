@@ -8,10 +8,13 @@ using Autodesk.Windows;
 
 namespace SitMasterPro
 {
+    /// <summary>
+    /// Handles the creation and management of the SitMaster Pro Ribbon interface.
+    /// </summary>
     public class RibbonHandler : IExtensionApplication
     {
         private const string TabTitle = "SITMASTER PRO";
-        private const string PanelTitle = "Points Management";
+        private const string PanelTitle = "SURVEY TOOLS";
 
         public void Initialize()
         {
@@ -27,51 +30,56 @@ namespace SitMasterPro
                     ribbon.Tabs.Add(tab);
                 }
 
-                AddPanel(tab);
+                AddSurveyPanel(tab);
                 tab.IsActive = true;
             }
         }
 
-        private void AddPanel(RibbonTab tab)
+        private void AddSurveyPanel(RibbonTab tab)
         {
-            RibbonPanelSource source = new RibbonPanelSource();
-            source.Title = PanelTitle;
-            RibbonPanel panel = new RibbonPanel();
-            panel.Source = source;
+            RibbonPanelSource source = new RibbonPanelSource { Title = PanelTitle };
+            RibbonPanel panel = new RibbonPanel { Source = source };
             tab.Panels.Add(panel);
 
-            RibbonButton btnImport = new RibbonButton();
-            btnImport.Text = "Import Points";
-            btnImport.ShowText = true;
-            btnImport.ShowImage = true;
-            btnImport.Size = RibbonItemSize.Large;
-            btnImport.Orientation = System.Windows.Controls.Orientation.Vertical;
-            btnImport.CommandHandler = new RibbonCommandHandler();
-            btnImport.CommandParameter = "._SMP_IMPORTPOINTS ";
+            RibbonButton btnImport = new RibbonButton
+            {
+                Text = "Import\nPoints",
+                Name = "SMP_BtnImport",
+                ShowText = true,
+                ShowImage = true,
+                Size = RibbonItemSize.Large,
+                Orientation = System.Windows.Controls.Orientation.Vertical,
+                CommandHandler = new RibbonCommandHandler(),
+                CommandParameter = "._SMP_IMPORTPOINTS ",
+                ToolTip = "Professional Point Import Tool",
+                Description = "Import points from text/CSV files with various format options."
+            };
 
-            // Placeholder for icons
-            // btnImport.LargeImage = LoadImage("SitMasterPro.Resources.icon32.png");
-            // btnImport.Image = LoadImage("SitMasterPro.Resources.icon16.png");
+            // Loading embedded resources for high-quality branding
+            btnImport.LargeImage = LoadImage("SitMasterPro.Resources.icon32.png");
+            btnImport.Image = LoadImage("SitMasterPro.Resources.icon16.png");
 
             source.Items.Add(btnImport);
         }
 
-        public void Terminate()
-        {
-        }
+        public void Terminate() { }
 
-        private BitmapImage? LoadImage(string name)
+        private BitmapImage? LoadImage(string resourceName)
         {
             try
             {
-                var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name);
-                if (stream == null) return null;
+                var assembly = Assembly.GetExecutingAssembly();
+                using (var stream = assembly.GetManifestResourceStream(resourceName))
+                {
+                    if (stream == null) return null;
 
-                BitmapImage bmp = new BitmapImage();
-                bmp.BeginInit();
-                bmp.StreamSource = stream;
-                bmp.EndInit();
-                return bmp;
+                    BitmapImage bmp = new BitmapImage();
+                    bmp.BeginInit();
+                    bmp.StreamSource = stream;
+                    bmp.CacheOption = BitmapCacheOption.OnLoad;
+                    bmp.EndInit();
+                    return bmp;
+                }
             }
             catch
             {
