@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
@@ -9,6 +8,12 @@ using Autodesk.Civil.DatabaseServices;
 using SitMasterPro.UI;
 using SitMasterPro.Models;
 
+#if NET8_0_OR_GREATER
+using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
+#else
+using Application = Autodesk.AutoCAD.ApplicationServices.Application;
+#endif
+
 namespace SitMasterPro.Logic
 {
     public class PointImporter
@@ -16,7 +21,7 @@ namespace SitMasterPro.Logic
         [CommandMethod("_SMP_IMPORTPOINTS")]
         public static void ImportPoints()
         {
-            Document doc = Application.DocumentManager.MdiActiveDocument;
+            var doc = Application.DocumentManager.MdiActiveDocument;
             Editor ed = doc.Editor;
             CivilDocument civilDoc = CivilApplication.ActiveDocument;
 
@@ -48,12 +53,9 @@ namespace SitMasterPro.Logic
                         {
                             if (string.IsNullOrWhiteSpace(line)) continue;
 
-                            string[] parts = line.Split(new[] { ',', ';', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                            if (parts.Length < 3)
-                            {
-                                skipped++;
-                                continue;
-                            }
+                            // Using normal split to preserve empty columns (crucial for CSV stability)
+                            string[] parts = line.Split(',', ';', ' ', '\t');
+                            if (parts.Length < 3) { skipped++; continue; }
 
                             try
                             {
@@ -83,16 +85,13 @@ namespace SitMasterPro.Logic
                                 if (!string.IsNullOrEmpty(desc)) point.RawDescription = desc;
                                 count++;
                             }
-                            catch
-                            {
-                                skipped++;
-                            }
+                            catch { skipped++; }
                         }
                     }
 
                     tr.Commit();
-                    ed.WriteMessage($"\nSitMaster Pro: Successfully imported {count} points from {Path.GetFileName(filePath)}.");
-                    if (skipped > 0) ed.WriteMessage($"\nSitMaster Pro: Skipped {skipped} invalid lines.");
+                    ed.WriteMessage($"\nSitMaster Pro: Successfully imported {count} points.");
+                    if (skipped > 0) ed.WriteMessage($"\nSitMaster Pro: Skipped {skipped} invalid/empty lines.");
                 }
             }
             catch (System.Exception ex)
@@ -104,7 +103,8 @@ namespace SitMasterPro.Logic
         private static double Parse(string[] parts, int index)
         {
             if (index < parts.Length && double.TryParse(parts[index], out double val)) return val;
-            throw new FormatException($"Invalid numeric value at index {index}");
+            // Throwing exception to be caught and count as a skipped line
+            throw new FormatException();
         }
 
         private static string GetDesc(string[] parts, int index)

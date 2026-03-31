@@ -4,13 +4,16 @@ using System.Windows.Media.Imaging;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.Windows;
 
+#if NET8_0_OR_GREATER
+using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
+#else
+using Application = Autodesk.AutoCAD.ApplicationServices.Application;
+#endif
+
 [assembly: ExtensionApplication(typeof(SitMasterPro.RibbonHandler))]
 
 namespace SitMasterPro
 {
-    /// <summary>
-    /// Handles the creation and management of the SitMaster Pro Ribbon interface.
-    /// </summary>
     public class RibbonHandler : IExtensionApplication
     {
         private const string TabTitle = "SITMASTER PRO";
@@ -55,7 +58,6 @@ namespace SitMasterPro
                 Description = "Import points from text/CSV files with various format options."
             };
 
-            // Loading embedded resources for high-quality branding
             btnImport.LargeImage = LoadImage("SitMasterPro.Resources.icon32.png");
             btnImport.Image = LoadImage("SitMasterPro.Resources.icon16.png");
 
@@ -97,7 +99,7 @@ namespace SitMasterPro
         {
             if (parameter is string cmd)
             {
-                Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.SendStringToExecute(cmd, true, false, true);
+                Application.DocumentManager.MdiActiveDocument.SendStringToExecute(cmd, true, false, true);
             }
         }
     }
