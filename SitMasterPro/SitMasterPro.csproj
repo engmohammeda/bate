@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>SitMasterPro</AssemblyName>
+    <RootNamespace>SitMasterPro</RootNamespace>
+    <Version>1.0.0</Version>
+    <Platforms>x64</Platforms>
+    <Nullable>enable</Nullable>
+    <NoWarn>$(NoWarn);MSB3030</NoWarn>
+
+    <!-- AUTOMATION: Define Plugin Deployment Path -->
+    <PluginFolderPath>$(AppData)\Autodesk\ApplicationPlugins\SitMasterPro.bundle</PluginFolderPath>
+    <!-- AUTOMATION: Define Civil 3D Executable (Default to 2024 for testing) -->
+    <Civil3DPath>C:\Program Files\Autodesk\AutoCAD 2024\acad.exe</Civil3DPath>
+    <C3DProfile>Civil 3D Imperial</C3DProfile>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <!-- References for Civil 3D 2020-2024 (Manual DLL pathing) -->
+    <Reference Include="Accoremgd"><HintPath>C:\Program Files\Autodesk\AutoCAD 2024\Accoremgd.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="AcDbMgd"><HintPath>C:\Program Files\Autodesk\AutoCAD 2024\AcDbMgd.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="AcMgd"><HintPath>C:\Program Files\Autodesk\AutoCAD 2024\AcMgd.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="AecBaseMgd"><HintPath>C:\Program Files\Autodesk\AutoCAD 2024\AecBaseMgd.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="AeccDbMgd"><HintPath>C:\Program Files\Autodesk\AutoCAD 2024\C3D\AeccDbMgd.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="AeccUiMgd"><HintPath>C:\Program Files\Autodesk\AutoCAD 2024\C3D\AeccUiMgd.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="AdWindows"><HintPath>C:\Program Files\Autodesk\AutoCAD 2024\AdWindows.dll</HintPath><Private>False</Private></Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+    <!-- References for Civil 3D 2025 (NuGet + UI DLL manual reference) -->
+    <PackageReference Include="AutoCAD.NET" Version="25.0.0" />
+    <PackageReference Include="AutoCAD.NET.Core" Version="25.0.0" />
+    <PackageReference Include="AutoCAD.NET.Model" Version="25.0.0" />
+    <PackageReference Include="Autodesk.Civil3D.Ref" Version="25.0.0" />
+    <!-- AdWindows is not in NuGet 25.0.0, manual path for 2025 -->
+    <Reference Include="AdWindows">
+      <HintPath>C:\Program Files\Autodesk\AutoCAD 2025\AdWindows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\icon32.png" />
+    <EmbeddedResource Include="Resources\icon16.png" />
+  </ItemGroup>
+
+  <!-- AUTOMATION: Post-Build Targets for Deployment and Auto-Launch -->
+  <Target Name="DeployPlugin" AfterTargets="Build">
+    <Message Text="SitMaster Pro: Starting Automated Deployment..." Importance="high" />
+    <MakeDir Directories="$(PluginFolderPath)\Contents\2020" />
+    <MakeDir Directories="$(PluginFolderPath)\Contents\2025" />
+    <MakeDir Directories="$(PluginFolderPath)\Contents\Resources" />
+    <Copy SourceFiles="../SitMasterPro.bundle/PackageContents.xml" DestinationFolder="$(PluginFolderPath)" />
+    <Copy SourceFiles="Resources\icon16.png;Resources\icon32.png" DestinationFolder="$(PluginFolderPath)\Contents\Resources" />
+    <Copy Condition="'$(TargetFramework)' == 'net48'" SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(PluginFolderPath)\Contents\2020" />
+    <Copy Condition="'$(TargetFramework)' == 'net8.0-windows'" SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(PluginFolderPath)\Contents\2025" />
+    <Message Text="SitMaster Pro: Deployment Successful to $(PluginFolderPath)" Importance="high" />
+  </Target>
+
+  <Target Name="LaunchCivil3D" AfterTargets="DeployPlugin" Condition="'$(Configuration)' == 'Debug'">
+    <Message Text="SitMaster Pro: Launching Civil 3D automatically..." Importance="high" />
+    <Exec Command="&quot;$(Civil3DPath)&quot; /p &quot;$(C3DProfile)&quot;" IgnoreExitCode="true" />
+  </Target>
+
+</Project>
