@@ -1,0 +1,47 @@
+<Window x:Class="SitMasterPro.UI.ImportPointsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2000/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2000/xaml"
+        Title="SitMaster Pro - Import Points" Height="450" Width="600"
+        WindowStartupLocation="CenterScreen" Background="#F4F4F4" ResizeMode="NoResize">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Text="Import Points from File" FontSize="24" FontWeight="Bold" Foreground="#333" Margin="0,0,0,20"/>
+
+        <!-- File Selection -->
+        <StackPanel Grid.Row="1" Margin="0,0,0,15">
+            <TextBlock Text="Select Source File:" Margin="0,0,0,5"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Name="txtFilePath" Height="30" VerticalContentAlignment="Center" IsReadOnly="True" Background="White"/>
+                <Button Content="Browse..." Grid.Column="1" Width="80" Margin="10,0,0,0" Click="Browse_Click"/>
+            </Grid>
+        </StackPanel>
+
+        <!-- Point Format Selection -->
+        <GroupBox Grid.Row="2" Header="Point Format" Padding="10">
+            <ListBox Name="lstFormats" BorderThickness="0" Background="Transparent">
+                <ListBoxItem Content="PNEZD (comma delimited)"/>
+                <ListBoxItem Content="PENZD (comma delimited)"/>
+                <ListBoxItem Content="PNEZ (comma delimited)"/>
+                <ListBoxItem Content="ENZ (space delimited)"/>
+                <ListBoxItem Content="External (Custom)"/>
+            </ListBox>
+        </GroupBox>
+
+        <!-- Action Buttons -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Name="btnImport" Content="Import" Width="100" Height="35" Click="Import_Click" Background="#007ACC" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
+            <Button Name="btnCancel" Content="Cancel" Width="100" Height="35" Margin="10,0,0,0" Click="Cancel_Click" Background="#CCC" BorderThickness="0"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0"
+                    AppVersion="1.0.0"
+                    Author="SitMaster Pro Team"
+                    ProductCode="{C3D-SMP-2020-2025}"
+                    Name="SitMaster Pro"
+                    Description="Advanced Point Import for Civil 3D"
+                    Icon="./Contents/Resources/icon16.png">
+
+  <CompanyDetails Name="SitMaster Pro" Phone="" Url="" Email="" />
+
+  <Components>
+    <!-- For Civil 3D 2020-2024 (R23.1 to R24.3) -->
+    <RuntimeRequirements OS="Win64" Platform="Civil3D" SeriesMin="R23.1" SeriesMax="R24.3" />
+    <ComponentEntry AppName="SitMasterPro"
+                    ModuleName="./Contents/2020/SitMasterPro.dll"
+                    AppDescription="SitMaster Pro Plugin"
+                    LoadOnAutoCADStartup="True">
+      <Commands GroupName="SITMASTER_PRO">
+        <Command Local="SMP_IMPORTPOINTS" Global="_SMP_IMPORTPOINTS" />
+      </Commands>
+    </ComponentEntry>
+
+    <!-- For Civil 3D 2025+ (R25.0+) -->
+    <RuntimeRequirements OS="Win64" Platform="Civil3D" SeriesMin="R25.0" SeriesMax="R25.9" />
+    <ComponentEntry AppName="SitMasterPro"
+                    ModuleName="./Contents/2025/SitMasterPro.dll"
+                    AppDescription="SitMaster Pro Plugin"
+                    LoadOnAutoCADStartup="True">
+      <Commands GroupName="SITMASTER_PRO">
+        <Command Local="SMP_IMPORTPOINTS" Global="_SMP_IMPORTPOINTS" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+
+</ApplicationPackage>
